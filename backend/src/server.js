@@ -3,19 +3,15 @@ dotenv.config();
 
 import app from "./app.js";
 import connectDB from "./config/db.js";
+import { logEvent } from "./middleware/logger.js";
 
 const PORT = process.env.PORT || 3000;
 
-// Connect Database
 connectDB();
 
-// Start Server
 app.listen(PORT, () => {
-  console.log(`
-=================================
-🚀 Server Started Successfully
-🌐 URL  : http://localhost:${PORT}
-⚙️ Mode : ${process.env.NODE_ENV}
-=================================
-`);
+  logEvent("info", "server_started", {
+    url: `http://localhost:${PORT}`,
+    mode: process.env.NODE_ENV,
+  }).catch(() => {});
 });
